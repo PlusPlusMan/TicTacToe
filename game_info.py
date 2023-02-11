@@ -21,24 +21,14 @@ class GameInfoFrame(tk.Frame):
 
         points_a, points_b = [], []
         def game_points(point=None):
-            with open("winner.txt", "r") as f:
-                point2 = str(f.read())
-                if point2 == '0':
+            if point is not None:
+                if point == 0:
                     points_a.append(point)
-                elif point2 == '1':
+                elif point == 1:
                     points_b.append(point)
-                elif point2 == '2':
+                elif point == 2:
                     points_b.append(point)
                     points_a.append(point)
-                else:
-                    if point is not None:
-                        if point == 0:
-                            points_a.append(point)
-                        elif point == 1:
-                            points_b.append(point)
-                        elif point == 2:
-                            points_b.append(point)
-                            points_a.append(point)
             sum_a = len(points_a)
             sum_b = len(points_b)
             self.points.configure(text=f"Player A: {str(sum_a)}\nPlayer B: {str(sum_b)}")
