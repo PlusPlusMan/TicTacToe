@@ -13,7 +13,7 @@ from StartGameSingleplayer import *
 from StartGameLAN import *
 from StartGameOnline import *
 from StartGameHotSeat import *
-#TODO: dokończyć StartGameHotSeat, należy dodać: resetowanie planszy po zakończeniu tury, powiadomienie o wygranej, przegranej, remisie
+#TODO: powiadomienie o wygranej, przegranej, remisie, z efektami dźwiękowymi
 #TODO: dodać nową funkcjonalność do game_info: text label z historią ruchów, przycisk back to menu, przycisk reset
 #TODO: dodać muzykę do gry i efekty dźwiękowe dla: kliknięcia, kółka, krzyżyka, wygranej, przegranej, remisu
 #TODO: skończyć Settings dodając możliwość zmiany dźwieku, poziomu trudności, języka, zdjęcia tła
