@@ -4,10 +4,11 @@ from glob import glob
 from itertools import chain
 from PIL import Image, ImageTk, ImageFilter
 from PIL.ImageTk import PhotoImage
-#from pygame import mixer, mixer_music
+# from pygame import mixer, mixer_music
 from check_win import check_win
 from game_info import GameInfoFrame
-#from debug_logs import debug_logs
+
+# from debug_logs import debug_logs
 
 # Global variable declaration of player_turn : variates beetwen 0 and 1
 player_turn = 0
@@ -26,8 +27,9 @@ class StartGameHotSeat(tk.Frame):
 
         # Process background image
         for _ in (glob("image/bg/*")):
-            bg_list.append(_)
-        self.bg_img = Image.open(random.choice(bg_list)).filter(ImageFilter.GaussianBlur(radius=0))
+            bg_list.append(_)  # looks for all images in the bg folder and adds then to a list
+        self.bg_img = Image.open(random.choice(bg_list)).filter(
+            ImageFilter.GaussianBlur(radius=0))  # 0 is no blur, change if needed
         self.bg_img = self.bg_img.resize((750, 500), Image.ANTIALIAS)
         self.bg_img = ImageTk.PhotoImage(self.bg_img)
         self.bg_img_id = self.canvas.create_image(375, 250, image=self.bg_img, anchor=tk.CENTER)
@@ -81,6 +83,8 @@ class StartGameHotSeat(tk.Frame):
             player_turn = 0
             board_list = [[None for _ in range(3)] for _ in range(3)]
             winner = None
+            with open("winner.txt", "w") as f:
+                f.write("")
             StartGameHotSeat.destroy(self)
             StartGameHotSeat.__init__(self, parent, controller)
             self.__init__(parent, controller)
@@ -143,7 +147,7 @@ class StartGameHotSeat(tk.Frame):
 
     def process_click(self, event):
         global player_turn, board_list
-        square_size = 100
+        square_size = 100  # size of one of the squares on the board
         a = event.x
         b = event.y
         x = int((a - self.board_img_padx) / square_size)
@@ -151,7 +155,7 @@ class StartGameHotSeat(tk.Frame):
         print("Clicked square: ({}, {})\tcoordinates: ({}, {})".format(x, y, a, b))
 
         # Check if mouse click is vaiable and check if square is already filled, if not, place figure on square
-        if x not in (0, 1, 2) or y not in (0, 1, 2) or board_list[x][y] is not None:
+        if x not in (0, 1, 2) or y not in (0, 1, 2) or board_list[x][y] is not None or b < 100 or a < 15:  # 15 and 100 are padding of board image
             return
         else:
             global result, winner

@@ -20,15 +20,28 @@ class GameInfoFrame(tk.Frame):
         time()
 
         points_a, points_b = [], []
+        with open("winner.txt", "r") as f:
+            for i in f.read():
+                if i == "0":
+                    points_a.append(i)
+                elif i == "1":
+                    points_b.append(i)
+                elif i == "2":
+                    points_b.append(i)
+                    points_a.append(i)
         def game_points(point=None):
-            if point is not None:
-                if point == 0:
-                    points_a.append(point)
-                elif point == 1:
-                    points_b.append(point)
-                elif point == 2:
-                    points_b.append(point)
-                    points_a.append(point)
+            with open("winner.txt", "a+") as f:
+                if point is not None:
+                    if point == 0:
+                        points_a.append(point)
+                        f.write(f"{point}")
+                    elif point == 1:
+                        points_b.append(point)
+                        f.write(f"{point}")
+                    elif point == 2:
+                        points_b.append(point)
+                        points_a.append(point)
+                        f.write(f"{point}")
             sum_a = len(points_a)
             sum_b = len(points_b)
             self.points.configure(text=f"Player A: {str(sum_a)}\nPlayer B: {str(sum_b)}")

@@ -91,17 +91,12 @@ class StartGameHotSeat(tk.Frame):
             global player_turn, board_list, winner
             player_turn = 0
             board_list = [[None for _ in range(3)] for _ in range(3)]
-            with open("winner.txt", "a") as f:
-                f.write(str(winner))
             winner = None
             StartGameHotSeat.destroy(self)
             StartGameHotSeat.__init__(self, parent, controller)
             self.__init__(parent, controller)
             StartGameHotSeat.pack(self)
             StartGameHotSeat.mainloop(self)
-            with open("winner.txt", "r") as f:
-                for i in f.read():
-                    pass
 
         # Place RESTART button on the canvas
         self.restart_button = tk.Button(self, text="restart",

@@ -19,6 +19,7 @@ from StartGameHotSeat import *
 #TODO: skończyć Settings dodając możliwość zmiany dźwieku, poziomu trudności, języka, zdjęcia tła
 #TODO: napisać multiplayer i lan
 
+# List of all frames that will be used in the app
 FRAME_LIST = (StartPage, StartGame, Settings, StartGameSingleplayer, StartGameHotSeat, StartGameLAN, StartGameOnline)
 
 class App(tk.Tk):
@@ -27,13 +28,16 @@ class App(tk.Tk):
         # Window config
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
         self.subtitle_font = tkfont.Font(family='Helvetica', size=12, slant="italic")
-
         self.title("Tic Tac Toe Game - by: @PlusPlusMan")
         self.wm_iconbitmap("image/title_icon/red-icon.ico")
         self.width = 750
         self.height = 500
         self.geometry(f"{self.width}x{self.height}")
         self.resizable(True, True)
+
+        # Clear the winner.txt file from data of previous games
+        with open("winner.txt", "w") as f:
+            f.write("")
 
         #Container settings
         container = tk.Frame(self)
