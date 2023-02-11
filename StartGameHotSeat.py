@@ -209,8 +209,8 @@ class StartGameHotSeat(tk.Frame):
             self.update()
             self.after(int(5 - 0.15 * steps))  # 10 milliseconds delay between each step
 
-            # UPDATE STATE OF NEXT_BUTTON
-            self.next_button.config(state="normal")
+        # UPDATE STATE OF NEXT_BUTTON
+        self.next_button.config(state="normal")
 
 
 if __name__ == "__main__":
