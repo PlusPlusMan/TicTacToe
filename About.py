@@ -1,6 +1,7 @@
 import tkinter as tk
 from applybg import *
 import webbrowser
+from pygame import mixer
 
 text_1 = """
 Author: Krystian Kowalik - @PlusPlusMan
@@ -19,12 +20,17 @@ I hope you will enjoy it.
 
 class About(tk.Frame):
     def __init__(self, parent, controller):
+        # Frame settings
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.bg_path = apply_background(x=0)
         self.bg_image = tk.PhotoImage(file=self.bg_path)
         self.canvas = tk.Canvas(self, width=750, height=500)
         self.canvas.pack()
+
+        # Music settings
+        mixer.init()
+        self.button_click1 = mixer.Sound("audio/button-click.mp3")
 
         # Rectangle info
         self.bg = self.canvas.create_image(0, 0, anchor="nw", image=self.bg_image)
@@ -37,15 +43,15 @@ class About(tk.Frame):
                                                                                 text="Back", height=2, width=20,
                                                                                 cursor="hand2",
                                                                                 bg="grey", activebackground="darkgrey",
-                                                                                command=lambda: controller.show_frame(
-                                                                                    "StartPage")))
+                                                                                command=lambda: (controller.show_frame(
+                                                                                    "StartPage"), self.button_click1.play())))
 
         self.git_button = self.canvas.create_window(500, 400, window=tk.Button(self,
                                                                                text="GitHub", height=2, width=20,
                                                                                bg="grey", activebackground="darkgrey",
                                                                                cursor="hand2",
-                                                                               command=lambda: webbrowser.open(
-                                                                                   "https://github.com/PlusPlusMan/TicTacToe")))
+                                                                               command=lambda: (webbrowser.open(
+                                                                                   "https://github.com/PlusPlusMan/TicTacToe"), self.button_click1.play())))
 
 
 if __name__ == "__main__":

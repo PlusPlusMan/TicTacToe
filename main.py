@@ -29,7 +29,6 @@ class App(tk.Tk):
         self.geometry(f"{self.width}x{self.height}")
         self.resizable(False, False)
 
-
         # Clear the winner.txt file from data of previous games
         with open("winner.txt", "w") as f:
             f.write("")
