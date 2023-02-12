@@ -4,11 +4,9 @@ from glob import glob
 from itertools import chain
 from PIL import Image, ImageTk, ImageFilter
 from PIL.ImageTk import PhotoImage
-# from pygame import mixer, mixer_music
+from pygame import mixer, mixer_music
 from check_win import check_win
 from game_info import GameInfoFrame
-
-# from debug_logs import debug_logs
 
 # Global variable declaration of player_turn : variates beetwen 0 and 1
 player_turn = 0
@@ -24,6 +22,13 @@ class StartGameHotSeat(tk.Frame):
         #  To run without window borders: parent.overrideredirect(True)
         self.canvas = tk.Canvas(self, width=750, height=500)
         self.canvas.pack()
+
+        # Process audio
+        mixer.init()
+        self.click1 = mixer.Sound("audio/lclick.mp3")
+        self.click2 = mixer.Sound("audio/rclick.mp3")
+        self.button_click1 = mixer.Sound("audio/button-click.mp3")
+        self.button_click2 = mixer.Sound("audio/button-click2.mp3")
 
         # Process background image
         for _ in (glob("image/bg/*")):
@@ -79,6 +84,7 @@ class StartGameHotSeat(tk.Frame):
         game_info_frame(start=True)
 
         def restart_game():
+            self.button_click1.play()
             global player_turn, board_list, winner
             player_turn = 0
             board_list = [[None for _ in range(3)] for _ in range(3)]
@@ -92,6 +98,7 @@ class StartGameHotSeat(tk.Frame):
             StartGameHotSeat.mainloop(self)
 
         def next_round():
+            self.button_click1.play()
             global player_turn, board_list, winner
             player_turn = 0
             board_list = [[None for _ in range(3)] for _ in range(3)]
@@ -124,7 +131,7 @@ class StartGameHotSeat(tk.Frame):
         self.back_menu_picon = PhotoImage(self.back_menu_icon)
         self.back_menu = tk.Button(self, image=self.back_menu_picon,
                                    height=16, width=16, bg="pink", activebackground="red", relief="groove",
-                                   command=lambda: controller.show_frame("StartPage"))
+                                   command=lambda: (self.button_click2.play(), controller.show_frame("StartPage")))
         self.back_menu = self.canvas.create_window(20, 430, anchor=tk.NW, window=self.back_menu)
 
         # Place back to SETTINGS button on the canvas
@@ -133,7 +140,7 @@ class StartGameHotSeat(tk.Frame):
         self.back_settings_picon = PhotoImage(self.back_settings_icon)
         self.back_settings = tk.Button(self, image=self.back_settings_picon,
                                        height=16, width=16, bg="lightyellow", activebackground="gold", relief="groove",
-                                       command=lambda: controller.show_frame("Settings"))
+                                       command=lambda: (self.button_click2.play(), controller.show_frame("Settings")))
         self.back_settings = self.canvas.create_window(60, 430, anchor=tk.NW, window=self.back_settings)
 
         # Place back to HOME button on the canvas
@@ -142,7 +149,7 @@ class StartGameHotSeat(tk.Frame):
         self.back_home_picon = PhotoImage(self.back_home_icon)
         self.back_home = tk.Button(self, image=self.back_home_picon,
                                    height=16, width=16, bg="lightgreen", activebackground="green", relief="groove",
-                                   command=lambda: controller.show_frame("StartGame"))
+                                   command=lambda: (self.button_click2.play(), controller.show_frame("StartGame")))
         self.back_home = self.canvas.create_window(100, 430, anchor=tk.NW, window=self.back_home)
 
     def process_click(self, event):
@@ -160,7 +167,8 @@ class StartGameHotSeat(tk.Frame):
         else:
             global result, winner
             board_list[x][y] = player_turn
-            self.add_figure(x, y)
+            self.add_figure(x, y)  # Place a figure on square
+            mixer.Sound.play(self.click1) if player_turn == 0 else mixer.Sound.play(self.click2)  # Play a sound effect
             # Checks for win, if detected, extract winner and winning grid from check_win function, else pass
             try:
                 result = check_win(board_list)
